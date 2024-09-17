@@ -1,0 +1,138 @@
+definitions:
+  dto.CreateSaleRequest:
+    properties:
+      discount:
+        type: number
+      endTime:
+        type: string
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+      startTime:
+        type: string
+    required:
+    - discount
+    - endTime
+    - product_id
+    - quantity
+    - startTime
+    type: object
+  dto.UpdateSaleRequest:
+    properties:
+      active:
+        type: boolean
+      discount:
+        type: number
+      endTime:
+        type: string
+      id:
+        type: integer
+      quantity:
+        type: integer
+      startTime:
+        type: string
+    required:
+    - id
+    type: object
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+paths:
+  /flash-sales:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ok
+      summary: Get Flash All Sale
+      tags:
+      - Sales
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Request Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateSaleRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+      summary: Create Flash Sale
+      tags:
+      - Sales
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Request Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateSaleRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+      summary: Update Flash Sale
+      tags:
+      - Sales
+  /flash-sales/{id}:
+    delete:
+      parameters:
+      - description: Flash Sale ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ok
+      summary: Delete Flash Sale
+      tags:
+      - Sales
+    get:
+      parameters:
+      - description: Flash Sale ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ok
+      summary: Get Flash Sale
+      tags:
+      - Sales
+  /flash-sales/{id}/buy:
+    post:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Ok
+      summary: Buy Product
+      tags:
+      - Sales
+swagger: "2.0"
