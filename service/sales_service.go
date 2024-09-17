@@ -196,6 +196,10 @@ func (ss *SalesService) DeleteSale(id int) (*entity.Sale, error) {
 		return nil, err
 	}
 
+	if err := ss.redisService.Delete(SalesKey); err != nil {
+		return nil, err
+	}
+
 	return sale, nil
 }
 

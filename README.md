@@ -96,7 +96,7 @@ curl --location --request PUT 'http://127.0.0.1:3000/flash-sales' \
   "active": true,
   "discount": 50,
   "endTime": "2024-09-27T11:04",
-  "id": 2,
+  "id": 1,
   "quantity" : 10,
   "startTime": "2024-09-16T11:04"
 }'
@@ -134,7 +134,7 @@ curl --location --request POST 'http://127.0.0.1:3000/flash-sales/2/buy?wait=1' 
 Retrieve details of a flash sale by its ID.
 
 ```bash
-curl --location 'http://127.0.0.1:3000/flash-sales/2' \
+curl --location 'http://127.0.0.1:3000/flash-sales/1' \
 --header 'accept: application/json'
 ```
 
