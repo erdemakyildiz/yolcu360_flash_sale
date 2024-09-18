@@ -2,15 +2,16 @@ package entity
 
 import (
 	"errors"
-	"flash_sale_management/dto"
+	"flash_sale_management/dto/request"
 	"fmt"
+	"github.com/gofiber/fiber/v2/log"
 	"time"
 )
 
 type Sale struct {
 	ID        int       `gorm:"primaryKey;autoIncrement"`
 	ProductID int       `gorm:"type:int;not null"`
-	Quantity  int       `gorm:"type:int;not null"`
+	SaleStock int       `gorm:"type:int;not null"`
 	Discount  float64   `gorm:"type:decimal(10,2);not null"`
 	CreatedAt time.Time `gorm:"autoCreateTime"`
 	UpdatedAt time.Time `gorm:"autoCreateTime"`
@@ -19,13 +20,15 @@ type Sale struct {
 	Active    bool      `gorm:"default:false"`
 }
 
-func (sale *Sale) FromDto(request dto.CreateSaleRequest) (*Sale, error) {
+func (sale *Sale) FromDto(request request.CreateSaleRequest) (*Sale, error) {
 	sale.ProductID = request.ProductID
-	sale.Quantity = request.Quantity
+	sale.SaleStock = request.SaleStock
 	sale.Discount = request.Discount
 
 	sTime, err := formatTime(request.StartTime)
 	if err != nil {
+		msg := fmt.Sprintf("error format time : %v", err)
+		log.Errorf(msg)
 		return nil, err
 	}
 
@@ -33,6 +36,8 @@ func (sale *Sale) FromDto(request dto.CreateSaleRequest) (*Sale, error) {
 
 	eTime, err := formatTime(request.EndTime)
 	if err != nil {
+		msg := fmt.Sprintf("error format time : %v", err)
+		log.Errorf(msg)
 		return nil, err
 	}
 
@@ -43,9 +48,9 @@ func (sale *Sale) FromDto(request dto.CreateSaleRequest) (*Sale, error) {
 	return sale, nil
 }
 
-func (sale *Sale) FromUpdateDto(request dto.UpdateSaleRequest) (*Sale, error) {
-	if request.Quantity > 0 {
-		sale.Quantity = request.Quantity
+func (sale *Sale) FromUpdateDto(request request.UpdateSaleRequest) (*Sale, error) {
+	if request.SaleStock > 0 {
+		sale.SaleStock = request.SaleStock
 	}
 
 	if request.Discount > 0 {

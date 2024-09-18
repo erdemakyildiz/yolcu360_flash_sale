@@ -1,5 +1,5 @@
 definitions:
-  dto.CreateSaleRequest:
+  request.CreateSaleRequest:
     properties:
       discount:
         type: number
@@ -7,7 +7,7 @@ definitions:
         type: string
       product_id:
         type: integer
-      quantity:
+      saleStock:
         type: integer
       startTime:
         type: string
@@ -15,10 +15,10 @@ definitions:
     - discount
     - endTime
     - product_id
-    - quantity
+    - saleStock
     - startTime
     type: object
-  dto.UpdateSaleRequest:
+  request.UpdateSaleRequest:
     properties:
       active:
         type: boolean
@@ -28,21 +28,32 @@ definitions:
         type: string
       id:
         type: integer
-      quantity:
+      saleStock:
         type: integer
       startTime:
         type: string
     required:
     - id
     type: object
+  response.SaleResponse:
+    properties:
+      active:
+        type: boolean
+      discount:
+        type: number
+      endTime:
+        type: string
+      product_id:
+        type: integer
+      saleStock:
+        type: integer
+      startTime:
+        type: string
+    type: object
 info:
   contact:
-    email: support@swagger.io
-    name: API Support
-    url: http://www.swagger.io/support
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    email: jerdem.akyildiz@gmail.com
+    name: Flash Sale Management
 paths:
   /flash-sales:
     get:
@@ -51,6 +62,14 @@ paths:
       responses:
         "200":
           description: Ok
+          schema:
+            items:
+              $ref: '#/definitions/response.SaleResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
       summary: Get Flash All Sale
       tags:
       - Sales
@@ -63,14 +82,18 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateSaleRequest'
+          $ref: '#/definitions/request.CreateSaleRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
+          schema:
+            $ref: '#/definitions/response.SaleResponse'
         "400":
           description: Bad Request
+          schema:
+            type: string
       summary: Create Flash Sale
       tags:
       - Sales
@@ -83,14 +106,18 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/dto.UpdateSaleRequest'
+          $ref: '#/definitions/request.UpdateSaleRequest'
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: Ok
+          schema:
+            $ref: '#/definitions/response.SaleResponse'
         "400":
           description: Bad Request
+          schema:
+            type: string
       summary: Update Flash Sale
       tags:
       - Sales
@@ -122,6 +149,12 @@ paths:
       responses:
         "200":
           description: Ok
+          schema:
+            $ref: '#/definitions/response.SaleResponse'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
       summary: Get Flash Sale
       tags:
       - Sales

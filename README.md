@@ -52,7 +52,7 @@ curl --location 'http://127.0.0.1:3000/flash-sales' \
     {
         "ID": 1,
         "ProductID": 20,
-        "Quantity": 5,
+        "SaleStock": 5,
         "Discount": 10,
         "CreatedAt": "2024-09-17T10:32:24.306832Z",
         "UpdatedAt": "2024-09-17T10:32:24.306832Z",
@@ -97,7 +97,7 @@ curl --location --request PUT 'http://127.0.0.1:3000/flash-sales' \
   "discount": 50,
   "endTime": "2024-09-27T11:04",
   "id": 1,
-  "quantity" : 10,
+  "saleStock" : 10,
   "startTime": "2024-09-16T11:04"
 }'
 ```

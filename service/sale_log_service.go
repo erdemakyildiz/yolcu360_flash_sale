@@ -3,6 +3,7 @@ package service
 import (
 	"flash_sale_management/entity"
 	"flash_sale_management/repository"
+	"flash_sale_management/utils"
 )
 
 type SaleLogService struct {
@@ -13,11 +14,12 @@ func NewSaleLogService(repo repository.SaleLogRepositoryInterface) SaleLogServic
 	return SaleLogService{saleLogRepository: repo}
 }
 
-func (sl *SaleLogService) SaveSaleLog(saleLog *entity.SaleLog) (*entity.SaleLog, error) {
+func (sl *SaleLogService) SaveSaleLog(saleLog *entity.SaleLog) error {
 	result := sl.saleLogRepository.Save(saleLog)
 	if result.Error != nil {
-		return nil, result.Error
+		utils.CreateLogMessage("error inserting log to db", result.Error)
+		return result.Error
 	}
 
-	return saleLog, nil
+	return nil
 }

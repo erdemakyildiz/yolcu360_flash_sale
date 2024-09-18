@@ -10,11 +10,12 @@ import (
 )
 
 var saleLog = entity.SaleLog{
-	ID:        1,
-	ProductID: 2,
-	Quantity:  10,
-	Price:     100,
-	CreatedAt: time.Now(),
+	ID:                    1,
+	ProductID:             2,
+	RemainingSaleStock:    10,
+	RemainingProductStock: 10,
+	Price:                 100,
+	CreatedAt:             time.Now(),
 }
 
 func Test_Save_when_expect_success(t *testing.T) {
@@ -27,7 +28,7 @@ func Test_Save_when_expect_success(t *testing.T) {
 
 	mock.ExpectBegin()
 	mock.ExpectQuery(`^INSERT INTO "sale_logs" (.+) VALUES (.+) RETURNING "id"`).
-		WithArgs(saleLog.ProductID, saleLog.Quantity, saleLog.Price, sqlmock.AnyArg(), saleLog.ID).
+		WithArgs(saleLog.ProductID, saleLog.RemainingSaleStock, saleLog.RemainingProductStock, saleLog.Price, sqlmock.AnyArg(), saleLog.ID).
 		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(sale.ID))
 	mock.ExpectCommit()
 

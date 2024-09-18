@@ -1,0 +1,8 @@
+database:
+  connectionUri: host=db user=postgres password=flash_sale dbname=flash_sale port=5432 sslmode=disable
+
+redis:
+  connectionUri: redis:6379
+
+server:
+  port: 3000

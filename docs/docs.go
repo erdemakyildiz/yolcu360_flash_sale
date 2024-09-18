@@ -10,13 +10,8 @@ const docTemplate = `{
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
         "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "Flash Sale Management",
+            "email": "jerdem.akyildiz@gmail.com"
         },
         "version": "{{.Version}}"
     },
@@ -34,7 +29,19 @@ const docTemplate = `{
                 "summary": "Get Flash All Sale",
                 "responses": {
                     "200": {
-                        "description": "Ok"
+                        "description": "Ok",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/response.SaleResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             },
@@ -56,16 +63,22 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UpdateSaleRequest"
+                            "$ref": "#/definitions/request.UpdateSaleRequest"
                         }
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created"
+                    "200": {
+                        "description": "Ok",
+                        "schema": {
+                            "$ref": "#/definitions/response.SaleResponse"
+                        }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             },
@@ -87,16 +100,22 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateSaleRequest"
+                            "$ref": "#/definitions/request.CreateSaleRequest"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "Created"
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/response.SaleResponse"
+                        }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -121,7 +140,16 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Ok"
+                        "description": "Ok",
+                        "schema": {
+                            "$ref": "#/definitions/response.SaleResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             },
@@ -167,13 +195,13 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.CreateSaleRequest": {
+        "request.CreateSaleRequest": {
             "type": "object",
             "required": [
                 "discount",
                 "endTime",
                 "product_id",
-                "quantity",
+                "saleStock",
                 "startTime"
             ],
             "properties": {
@@ -186,7 +214,7 @@ const docTemplate = `{
                 "product_id": {
                     "type": "integer"
                 },
-                "quantity": {
+                "saleStock": {
                     "type": "integer"
                 },
                 "startTime": {
@@ -194,7 +222,7 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.UpdateSaleRequest": {
+        "request.UpdateSaleRequest": {
             "type": "object",
             "required": [
                 "id"
@@ -212,7 +240,30 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "quantity": {
+                "saleStock": {
+                    "type": "integer"
+                },
+                "startTime": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.SaleResponse": {
+            "type": "object",
+            "properties": {
+                "active": {
+                    "type": "boolean"
+                },
+                "discount": {
+                    "type": "number"
+                },
+                "endTime": {
+                    "type": "string"
+                },
+                "product_id": {
+                    "type": "integer"
+                },
+                "saleStock": {
                     "type": "integer"
                 },
                 "startTime": {

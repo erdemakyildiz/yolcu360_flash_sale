@@ -16,8 +16,8 @@ var (
 func LoadConfig() {
 	env := os.Getenv("profile")
 
-	if env == "prod" {
-		viper.SetConfigName("prod")
+	if env == "test" {
+		viper.SetConfigName("test")
 	} else {
 		viper.SetConfigName("local")
 	}

@@ -3,6 +3,7 @@ package repository
 import (
 	"flash_sale_management/entity"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type SaleRepository struct {
@@ -16,6 +17,8 @@ type SaleRepositoryInterface interface {
 	FindOneById(id int) Result
 	FindOneByProduct(id int) Result
 	DeleteOneById(id int) Result
+	LockAndUpdateSale(tx *gorm.DB, updatedSale *entity.Sale) Result
+	BeginTransaction() *gorm.DB
 }
 
 func NewSaleRepository(db *gorm.DB) *SaleRepository {
@@ -40,6 +43,27 @@ func (r *SaleRepository) Update(sale *entity.Sale) Result {
 	}
 
 	return Result{Result: sale}
+}
+
+func (r *SaleRepository) LockAndUpdateSale(tx *gorm.DB, updatedSale *entity.Sale) Result {
+	var sale entity.Sale
+	err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("id = ?", updatedSale.ID).Take(&sale).Error
+	if err != nil {
+		tx.Rollback()
+		return Result{Error: err}
+	}
+
+	err = tx.Save(&updatedSale).Error
+	if err != nil {
+		tx.Rollback()
+		return Result{Error: err}
+	}
+
+	return Result{Result: &sale}
+}
+
+func (r *SaleRepository) BeginTransaction() *gorm.DB {
+	return r.db.Begin()
 }
 
 func (r *SaleRepository) FindAll() Result {

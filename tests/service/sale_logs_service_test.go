@@ -12,11 +12,12 @@ import (
 )
 
 var saleLog = &entity.SaleLog{
-	ID:        1,
-	ProductID: 2,
-	Quantity:  10,
-	Price:     10,
-	CreatedAt: time.Now(),
+	ID:                    1,
+	ProductID:             2,
+	RemainingSaleStock:    10,
+	RemainingProductStock: 10,
+	Price:                 10,
+	CreatedAt:             time.Now(),
 }
 
 func init() {
@@ -30,10 +31,8 @@ func Test_CreateSaleLog_when_expect_success(t *testing.T) {
 
 	saleLogService := service.NewSaleLogService(repo)
 
-	log, err := saleLogService.SaveSaleLog(saleLog)
+	err := saleLogService.SaveSaleLog(saleLog)
 
 	assert.Nil(t, err)
-	assert.NotNil(t, log)
-	assert.Equal(t, log.ID, saleLog.ID)
 	repo.AssertExpectations(t)
 }

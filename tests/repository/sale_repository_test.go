@@ -12,7 +12,7 @@ import (
 var sale = entity.Sale{
 	ID:        1,
 	ProductID: 1,
-	Quantity:  30.0,
+	SaleStock: 30.0,
 	Discount:  10,
 	CreatedAt: time.Time{},
 	UpdatedAt: time.Time{},
@@ -29,8 +29,8 @@ func Test_when_requestFindSales_expect_returnAllSales(t *testing.T) {
 
 	salesRepository := repository.NewSaleRepository(db)
 
-	rows := sqlmock.NewRows([]string{"id", "product_id", "quantity", "created_at", "start_time", "end_time", "active"}).
-		AddRow(sale.ID, sale.ProductID, sale.Quantity, sale.CreatedAt, sale.StartTime, sale.EndTime, sale.Active)
+	rows := sqlmock.NewRows([]string{"id", "product_id", "sale_stock", "created_at", "start_time", "end_time", "active"}).
+		AddRow(sale.ID, sale.ProductID, sale.SaleStock, sale.CreatedAt, sale.StartTime, sale.EndTime, sale.Active)
 
 	mock.ExpectQuery(`^SELECT \* FROM "sales"`).
 		WillReturnRows(rows)
@@ -54,8 +54,8 @@ func Test_when_requestFindSale_expect_returnOneSale(t *testing.T) {
 
 	salesRepository := repository.NewSaleRepository(db)
 
-	rows := sqlmock.NewRows([]string{"id", "product_id", "quantity", "created_at", "start_time", "end_time", "active"}).
-		AddRow(sale.ID, sale.ProductID, sale.Quantity, sale.CreatedAt, sale.StartTime, sale.EndTime, sale.Active)
+	rows := sqlmock.NewRows([]string{"id", "product_id", "sale_stock", "created_at", "start_time", "end_time", "active"}).
+		AddRow(sale.ID, sale.ProductID, sale.SaleStock, sale.CreatedAt, sale.StartTime, sale.EndTime, sale.Active)
 
 	mock.ExpectQuery(`^SELECT \* FROM "sales"`).
 		WithArgs(sale.ID, 1).
@@ -80,8 +80,8 @@ func Test_when_requestFindSaleByProductID_expect_returnOneSale(t *testing.T) {
 
 	salesRepository := repository.NewSaleRepository(db)
 
-	rows := sqlmock.NewRows([]string{"id", "product_id", "quantity", "created_at", "start_time", "end_time", "active"}).
-		AddRow(sale.ID, sale.ProductID, sale.Quantity, sale.CreatedAt, sale.StartTime, sale.EndTime, sale.Active)
+	rows := sqlmock.NewRows([]string{"id", "product_id", "sale_stock", "created_at", "start_time", "end_time", "active"}).
+		AddRow(sale.ID, sale.ProductID, sale.SaleStock, sale.CreatedAt, sale.StartTime, sale.EndTime, sale.Active)
 
 	mock.ExpectQuery(`^SELECT \* FROM "sales"`).
 		WithArgs(sale.ProductID, 1).
@@ -108,7 +108,7 @@ func Test_Save_when_validSale_expect_success(t *testing.T) {
 
 	mock.ExpectBegin()
 	mock.ExpectQuery(`^INSERT INTO "sales" (.+) VALUES (.+) RETURNING "id"`).
-		WithArgs(sale.ProductID, sale.Quantity, sale.Discount, sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sale.Active, sale.ID).
+		WithArgs(sale.ProductID, sale.SaleStock, sale.Discount, sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sale.Active, sale.ID).
 		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(sale.ID))
 	mock.ExpectCommit()
 
@@ -132,7 +132,7 @@ func Test_update_when_validSale_expect_success(t *testing.T) {
 
 	mock.ExpectBegin()
 	mock.ExpectExec(`^UPDATE "sales" SET (.+) WHERE "id" = ?`).
-		WithArgs(sale.ProductID, sale.Quantity, sale.Discount, sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sale.Active, sale.ID).
+		WithArgs(sale.ProductID, sale.SaleStock, sale.Discount, sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sale.Active, sale.ID).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectCommit()
 

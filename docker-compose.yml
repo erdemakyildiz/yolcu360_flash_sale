@@ -12,6 +12,8 @@ services:
     depends_on:
       - db
       - redis
+    environment:
+      - profile=test
     restart: on-failure
 
   db:
