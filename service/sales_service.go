@@ -21,8 +21,8 @@ type SalesService struct {
 	redisService   RedisServiceInterface
 }
 
-const SalesKey = "KEY1_SALES"
-const SaleKey = "KEY1_SALE:%d"
+const SalesKey = "KEY_SALES"
+const SaleKey = "KEY_SALE:%d"
 
 func NewSalesService(repo repository.SaleRepositoryInterface, productService ProductService, saleLogService SaleLogService, service RedisServiceInterface) SalesService {
 	return SalesService{
