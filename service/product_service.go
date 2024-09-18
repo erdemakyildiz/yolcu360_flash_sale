@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const ProductKey = "KEY_PRODUCT:%d"
+const ProductKey = "KEY1_PRODUCT:%d"
 
 type ProductService struct {
 	productRepository repository.ProductRepositoryInterface

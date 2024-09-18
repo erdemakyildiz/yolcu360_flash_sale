@@ -36,34 +36,7 @@ Flash Sale Management is an e-commerce system designed to handle flash sales for
 
 ## API Endpoints
 
-### 1. Get All Flash Sales
-
-Retrieve a list of all active flash sales.
-
-```bash
-curl --location 'http://127.0.0.1:3000/flash-sales' \
---header 'accept: application/json'
-```
-
-**Response:**
-
-```json
-[
-    {
-        "ID": 1,
-        "ProductID": 20,
-        "SaleStock": 5,
-        "Discount": 10,
-        "CreatedAt": "2024-09-17T10:32:24.306832Z",
-        "UpdatedAt": "2024-09-17T10:32:24.306832Z",
-        "StartTime": "2024-09-16T11:04:00Z",
-        "EndTime": "2024-09-26T11:04:00Z",
-        "Active": false
-    }
-]
-```
-
-### 2. Create Flash Sale
+### 1. Create Flash Sale
 
 Create a new flash sale.
 
@@ -73,19 +46,26 @@ curl --location 'http://127.0.0.1:3000/flash-sales' \
 --data '{
   "discount": 10,
   "endTime": "2024-09-26T11:04",
-  "product_id": 20,
+  "product_id": 1,
   "startTime": "2024-09-16T11:04",
-  "quantity": 5
+  "saleStock": 5
 }'
 ```
 
 **Response:**
 
 ```json
-201 Created
+{
+  "product_id": 1,
+  "saleStock": 5,
+  "discount": 10,
+  "startTime": "2024-09-16T11:04:00Z",
+  "endTime": "2024-09-26T11:04:00Z",
+  "active": false
+}
 ```
 
-### 3. Update Flash Sale
+### 2. Update Flash Sale
 
 Update an existing flash sale.
 
@@ -93,43 +73,30 @@ Update an existing flash sale.
 curl --location --request PUT 'http://127.0.0.1:3000/flash-sales' \
 --header 'Content-Type: application/json' \
 --data '{
-  "active": true,
-  "discount": 50,
-  "endTime": "2024-09-27T11:04",
-  "id": 1,
-  "saleStock" : 10,
-  "startTime": "2024-09-16T11:04"
+  "id" : 1,
+  "discount": 20,
+  "endTime": "2024-09-26T11:04",
+  "product_id": 1,
+  "startTime": "2024-09-16T11:04",
+  "saleStock": 5,
+  "active": true 
 }'
 ```
 
 **Response:**
 
 ```json
-200 OK
-```
-
-### 4. Sale Product
-
-Purchase a product from an active flash sale.
-
-```bash
-curl --location --request POST 'http://127.0.0.1:3000/flash-sales/2/buy?wait=1' \
---header 'accept: application/json'
-```
-
-**Response:**
-
-```json
 {
-    "ID": 1,
-    "ProductID": 20,
-    "Quantity": 1,
-    "Price": 50,
-    "CreatedAt": "2024-09-17T10:34:05.025908426Z"
+  "product_id": 1,
+  "saleStock": 5,
+  "discount": 20,
+  "startTime": "2024-09-16T11:04:00Z",
+  "endTime": "2024-09-26T11:04:00Z",
+  "active": true
 }
 ```
 
-### 5. Get Flash Sale by ID
+### 3. Get Flash Sale by ID
 
 Retrieve details of a flash sale by its ID.
 
@@ -142,19 +109,41 @@ curl --location 'http://127.0.0.1:3000/flash-sales/1' \
 
 ```json
 {
-    "ID": 2,
-    "ProductID": 20,
-    "Quantity": 5,
-    "Discount": 10,
-    "CreatedAt": "2024-09-17T10:33:37.397007844Z",
-    "UpdatedAt": "2024-09-17T10:33:37.397007844Z",
-    "StartTime": "2024-09-16T11:04:00Z",
-    "EndTime": "2024-09-26T11:04:00Z",
-    "Active": false
+  "product_id": 1,
+  "saleStock": 5,
+  "discount": 20,
+  "startTime": "2024-09-16T11:04:00Z",
+  "endTime": "2024-09-26T11:04:00Z",
+  "active": true
 }
 ```
 
-### 6. Delete Flash Sale
+### 4. Get All Flash Sales
+
+Retrieve a list of all active flash sales.
+
+```bash
+curl --location 'http://127.0.0.1:3000/flash-sales' \
+--header 'accept: application/json'
+```
+
+**Response:**
+
+```json
+[
+  {
+    "product_id": 1,
+    "saleStock": 5,
+    "discount": 20,
+    "startTime": "2024-09-16T11:04:00Z",
+    "endTime": "2024-09-26T11:04:00Z",
+    "active": true
+  }
+]
+```
+
+
+### 5. Delete Flash Sale
 
 Delete an existing flash sale by ID.
 
@@ -167,6 +156,29 @@ curl --location --request DELETE 'http://127.0.0.1:3000/flash-sales/1' \
 
 ```json
 200 OK
+```
+
+
+### 6. Sale Product
+
+Purchase a product from an active flash sale.
+
+```bash
+curl --location --request POST 'http://127.0.0.1:3000/flash-sales/2/buy?wait=1' \
+--header 'accept: application/json'
+```
+
+**Response:**
+
+```json
+{
+  "ID": 1,
+  "ProductID": 1,
+  "RemainingSaleStock": 4,
+  "RemainingProductStock": 9,
+  "Price": 40,
+  "CreatedAt": "2024-09-18T05:23:05.714762+03:00"
+}
 ```
 
 ## Setup and Running
